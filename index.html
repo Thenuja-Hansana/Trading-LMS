@@ -29,10 +29,96 @@
         body {
             background-color: var(--light);
             color: var(--dark);
-            overflow-x: hidden;
+            overflow-x: hidden; /* Prevent scrolling during splash */
         }
 
-        /* --- NAV & HERO (KEPT AS REQUESTED) --- */
+        body.loaded {
+            overflow-x: hidden;
+            overflow-y: auto; /* Re-enable scrolling after splash */
+        }
+
+        /* --- SPLASH SCREEN STYLES --- */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .splash-screen.hidden {
+            transform: translateY(-100%);
+        }
+
+        .splash-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -1px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Loading Bar Container */
+        .loading-bar-container {
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        /* The Moving Bar */
+        .loading-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: loadProgress 2.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .splash-text {
+            margin-top: 15px;
+            color: var(--text-gray);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            50% { width: 60%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+
+        /* --- MAIN SITE STYLES --- */
+
+        /* Nav */
         nav {
             position: absolute;
             top: 0; left: 0; width: 100%;
@@ -40,16 +126,13 @@
             display: flex; justify-content: space-between; align-items: center;
             z-index: 1000; background: transparent;
         }
-
         .logo {
             font-size: 1.5rem; font-weight: 800; color: white;
             letter-spacing: -1px; display: flex; align-items: center; gap: 12px;
         }
-
         .nav-links { display: flex; align-items: center; gap: 3rem; }
         .nav-links a { text-decoration: none; color: rgba(255, 255, 255, 0.8); font-weight: 500; font-size: 0.95rem; transition: 0.3s; }
         .nav-links a:hover { color: white; }
-
         .btn-nav-cta {
             padding: 12px 28px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2); color: white !important; border-radius: 100px;
@@ -57,224 +140,78 @@
         }
         .btn-nav-cta:hover { background: white; color: var(--dark) !important; }
 
+        /* Hero */
         .hero {
             position: relative; height: 100vh; width: 100%;
             display: flex; align-items: center; justify-content: center;
             text-align: center; color: white; overflow: hidden;
         }
-
         .video-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover; z-index: -1;
         }
-
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(180deg, rgba(15,23,42,0.3) 0%, rgba(15,23,42,0.9) 100%); z-index: 0;
         }
-
         .hero-content { position: relative; z-index: 2; max-width: 1000px; padding: 0 20px; margin-top: 60px; }
-
         .tagline {
             display: inline-block; font-size: 0.9rem; font-weight: 600; letter-spacing: 3px;
             text-transform: uppercase; color: #cbd5e1; margin-bottom: 25px;
             border: 1px solid rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 50px;
             background: rgba(0,0,0,0.3); backdrop-filter: blur(4px);
         }
-
         .hero h1 {
             font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -2px;
             margin-bottom: 30px; background: linear-gradient(to bottom, #ffffff, #cbd5e1);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
         .hero p { font-size: 1.25rem; color: #cbd5e1; font-weight: 300; max-width: 600px; margin: 0 auto 50px; line-height: 1.6; }
-
         .scroll-indicator {
             position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2;
             opacity: 0.7; animation: bounce 2s infinite;
         }
         @keyframes bounce { 0%, 100% {transform: translateX(-50%) translateY(0);} 50% {transform: translateX(-50%) translateY(-10px);} }
 
+        /* Bento Grid Section */
+        .disciplines-section { padding: 120px 5%; background: white; position: relative; }
+        .section-header { text-align: center; max-width: 700px; margin: 0 auto 80px; }
+        .section-header h2 { font-size: 3rem; color: var(--dark); margin-bottom: 20px; letter-spacing: -1px; }
+        .section-header p { color: var(--text-gray); font-size: 1.1rem; }
 
-        /* --- NEW: PROFESSIONAL BENTO GRID SECTION --- */
-        .disciplines-section {
-            padding: 120px 5%;
-            background: white;
-            position: relative;
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 80px;
-        }
-
-        .section-header h2 {
-            font-size: 3rem;
-            color: var(--dark);
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-        }
-
-        .section-header p {
-            color: var(--text-gray);
-            font-size: 1.1rem;
-        }
-
-        /* The Grid Layout */
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 Columns */
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Card Design */
+        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        
         .course-card {
-            background: #fff;
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 40px;
-            position: relative;
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow: hidden;
-            height: 400px; /* Uniform height */
-            cursor: pointer;
+            background: #fff; border: 1px solid var(--card-border); border-radius: 24px; padding: 40px;
+            position: relative; transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; height: 400px; cursor: pointer;
         }
-
-        /* Hover: Shadow & Lift */
-        .course-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-            border-color: var(--primary);
-        }
-
-        /* Background Pattern (Subtle) */
+        .course-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); border-color: var(--primary); }
         .course-card::before {
-            content: '';
-            position: absolute;
-            top: 0; right: 0; width: 150px; height: 150px;
+            content: ''; position: absolute; top: 0; right: 0; width: 150px; height: 150px;
             background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, rgba(255,255,255,0) 70%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            opacity: 0; transition: opacity 0.5s ease;
         }
         .course-card:hover::before { opacity: 1; }
 
-        /* Top Area: Tag & Icon */
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .tag { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 6px 12px; border-radius: 50px; background: #f1f5f9; color: var(--text-gray); transition: 0.3s; }
+        .course-card:hover .tag { background: var(--primary); color: white; }
+        .icon-box { width: 50px; height: 50px; background: #f8fafc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 1.2rem; transition: 0.4s ease; }
+        .course-card:hover .icon-box { background: var(--primary); color: white; transform: scale(1.1) rotate(-5deg); }
+        .course-card h3 { font-size: 1.8rem; margin-bottom: 15px; color: var(--dark); font-weight: 700; }
+        .course-card p { font-size: 1rem; color: var(--text-gray); line-height: 1.6; }
+        .card-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 25px; }
+        .meta-info { font-size: 0.85rem; color: var(--text-gray); display: flex; gap: 15px; }
+        .arrow-btn { width: 40px; height: 40px; border-radius: 50%; background: white; border: 1px solid var(--card-border); display: flex; align-items: center; justify-content: center; color: var(--dark); transition: all 0.3s ease; }
+        .course-card:hover .arrow-btn { background: var(--dark); color: white; border-color: var(--dark); transform: translateX(5px); }
 
-        .tag {
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 6px 12px;
-            border-radius: 50px;
-            background: #f1f5f9;
-            color: var(--text-gray);
-            transition: 0.3s;
-        }
-
-        .course-card:hover .tag {
-            background: var(--primary);
-            color: white;
-        }
-
-        .icon-box {
-            width: 50px; height: 50px;
-            background: #f8fafc;
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--dark);
-            font-size: 1.2rem;
-            transition: 0.4s ease;
-        }
-
-        .course-card:hover .icon-box {
-            background: var(--primary);
-            color: white;
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        /* Content Area */
-        .course-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-            font-weight: 700;
-        }
-
-        .course-card p {
-            font-size: 1rem;
-            color: var(--text-gray);
-            line-height: 1.6;
-        }
-
-        /* Bottom Action Area */
-        .card-footer {
-            margin-top: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 25px;
-        }
-
-        .meta-info {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            display: flex;
-            gap: 15px;
-        }
-
-        .arrow-btn {
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            background: white;
-            border: 1px solid var(--card-border);
-            display: flex; align-items: center; justify-content: center;
-            color: var(--dark);
-            transition: all 0.3s ease;
-        }
-
-        .course-card:hover .arrow-btn {
-            background: var(--dark);
-            color: white;
-            border-color: var(--dark);
-            transform: translateX(5px);
-        }
-
-        /* Grid Placement for Professional Layout */
-        /* First 3 items take 1 column each. Last 2 items are centered below */
-        .bento-grid .course-card:nth-child(4) {
-            grid-column: span 1; 
-            margin-left: auto; /* Push towards center */
-        }
-        .bento-grid .course-card:nth-child(5) {
-            grid-column: span 1;
-            margin-right: auto; /* Push towards center */
-        }
+        .bento-grid .course-card:nth-child(4) { grid-column: span 1; margin-left: auto; }
+        .bento-grid .course-card:nth-child(5) { grid-column: span 1; margin-right: auto; }
         
-        /* Centering trick for last row: Make the grid wrapper handle it */
-        .bottom-row-wrapper {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            max-width: 900px;
-            margin: 30px auto 0; /* Add top margin */
-        }
+        .bottom-row-wrapper { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 900px; margin: 30px auto 0; }
 
-
-        /* --- FOOTER (KEPT AS REQUESTED) --- */
+        /* Footer */
         footer { background-color: var(--dark); color: white; padding: 100px 8% 40px; }
         .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 60px; margin-bottom: 80px; }
         .footer-col h4 { font-size: 1.1rem; margin-bottom: 25px; color: white; }
@@ -288,20 +225,22 @@
         .newsletter button:hover { background: #1d4ed8; }
         .footer-bottom { border-top: 1px solid #334155; padding-top: 40px; display: flex; justify-content: space-between; color: var(--text-gray); font-size: 0.9rem; }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .bento-grid { grid-template-columns: repeat(2, 1fr); }
-            .bottom-row-wrapper { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .bento-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 3rem; }
-            .footer-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 1024px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } .bottom-row-wrapper { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .nav-links { display: none; } .bento-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 3rem; } .footer-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+
+    <div class="splash-screen" id="splash">
+        <div class="splash-logo">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+            TRADE ACADEMY
+        </div>
+        <div class="loading-bar-container">
+            <div class="loading-bar"></div>
+        </div>
+        <div class="splash-text">Establishing Connection...</div>
+    </div>
 
     <nav>
         <div class="logo">
@@ -322,10 +261,10 @@
         </video>
         <div class="overlay"></div>
         <div class="hero-content">
-            <span class="tagline" data-aos="fade-down">The Future of Financial Literacy</span>
-            <h1 data-aos="fade-up" data-aos-delay="100">Trade with Intelligence.<br>Learn with Clarity.</h1>
-            <p data-aos="fade-up" data-aos-delay="200">A world-class curriculum designed for high-performance individuals looking to master the art and science of the financial markets.</p>
-            <div data-aos="fade-up" data-aos-delay="300" style="margin-top: 40px;">
+            <span class="tagline" data-aos="fade-down" data-aos-delay="2800">The Future of Financial Literacy</span>
+            <h1 data-aos="fade-up" data-aos-delay="2900">Trade with Intelligence.<br>Learn with Clarity.</h1>
+            <p data-aos="fade-up" data-aos-delay="3000">A world-class curriculum designed for high-performance individuals looking to master the art and science of the financial markets.</p>
+            <div data-aos="fade-up" data-aos-delay="3100" style="margin-top: 40px;">
                 <a href="#curriculum" style="background: white; color: black; padding: 18px 40px; border-radius: 100px; text-decoration: none; font-weight: 700; transition: 0.3s; display: inline-block;">Explore Learning Paths</a>
             </div>
         </div>
@@ -341,125 +280,64 @@
         </div>
 
         <div class="bento-grid">
-            
             <div class="course-card" data-aos="fade-up" data-aos-delay="100">
                 <div class="card-top">
                     <span class="tag">Entry Level</span>
-                    <div class="icon-box">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
-                    </div>
+                    <div class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></div>
                 </div>
-                <div>
-                    <h3>Basic Foundations</h3>
-                    <p>Market terminology, exchange mechanics, and platform setup. The essential groundwork for all future learning.</p>
-                </div>
+                <div><h3>Basic Foundations</h3><p>Market terminology, exchange mechanics, and platform setup. The essential groundwork for all future learning.</p></div>
                 <div class="card-footer">
-                    <div class="meta-info">
-                        <span>12 Modules</span>
-                        <span>•</span>
-                        <span>4h Video</span>
-                    </div>
-                    <div class="arrow-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                    </div>
+                    <div class="meta-info"><span>12 Modules</span><span>•</span><span>4h Video</span></div>
+                    <div class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                 </div>
             </div>
-
             <div class="course-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="card-top">
                     <span class="tag">Core Skill</span>
-                    <div class="icon-box">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                    </div>
+                    <div class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
                 </div>
-                <div>
-                    <h3>Market Analysis</h3>
-                    <p>Technical patterns and fundamental indicators. Learn to read the charts like a language.</p>
-                </div>
+                <div><h3>Market Analysis</h3><p>Technical patterns and fundamental indicators. Learn to read the charts like a language.</p></div>
                 <div class="card-footer">
-                    <div class="meta-info">
-                        <span>24 Modules</span>
-                        <span>•</span>
-                        <span>8h Video</span>
-                    </div>
-                    <div class="arrow-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                    </div>
+                    <div class="meta-info"><span>24 Modules</span><span>•</span><span>8h Video</span></div>
+                    <div class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                 </div>
             </div>
-
             <div class="course-card" data-aos="fade-up" data-aos-delay="300">
                 <div class="card-top">
                     <span class="tag">Critical</span>
-                    <div class="icon-box">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-                    </div>
+                    <div class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></div>
                 </div>
-                <div>
-                    <h3>Trading Psychology</h3>
-                    <p>Emotional regulation and cognitive bias control. Master the most important asset: your mind.</p>
-                </div>
+                <div><h3>Trading Psychology</h3><p>Emotional regulation and cognitive bias control. Master the most important asset: your mind.</p></div>
                 <div class="card-footer">
-                    <div class="meta-info">
-                        <span>10 Modules</span>
-                        <span>•</span>
-                        <span>Live Workshops</span>
-                    </div>
-                    <div class="arrow-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                    </div>
+                    <div class="meta-info"><span>10 Modules</span><span>•</span><span>Live Workshops</span></div>
+                    <div class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                 </div>
             </div>
         </div>
 
         <div class="bottom-row-wrapper" data-aos="fade-up" data-aos-delay="400">
-            
             <div class="course-card">
                 <div class="card-top">
                     <span class="tag">Mandatory</span>
-                    <div class="icon-box">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    </div>
+                    <div class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
                 </div>
-                <div>
-                    <h3>Risk Management</h3>
-                    <p>Position sizing and capital preservation. The mathematical formula for longevity in the markets.</p>
-                </div>
+                <div><h3>Risk Management</h3><p>Position sizing and capital preservation. The mathematical formula for longevity in the markets.</p></div>
                 <div class="card-footer">
-                    <div class="meta-info">
-                        <span>8 Modules</span>
-                        <span>•</span>
-                        <span>Tools included</span>
-                    </div>
-                    <div class="arrow-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                    </div>
+                    <div class="meta-info"><span>8 Modules</span><span>•</span><span>Tools included</span></div>
+                    <div class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                 </div>
             </div>
-
             <div class="course-card">
                 <div class="card-top">
                     <span class="tag">Specialist</span>
-                    <div class="icon-box">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    </div>
+                    <div class="icon-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
                 </div>
-                <div>
-                    <h3>Niche & Algo Strategies</h3>
-                    <p>Algorithmic trading, Crypto-assets, and Macro-economic strategy for the modern era.</p>
-                </div>
+                <div><h3>Niche & Algo Strategies</h3><p>Algorithmic trading, Crypto-assets, and Macro-economic strategy for the modern era.</p></div>
                 <div class="card-footer">
-                    <div class="meta-info">
-                        <span>15 Modules</span>
-                        <span>•</span>
-                        <span>Code Labs</span>
-                    </div>
-                    <div class="arrow-btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
-                    </div>
+                    <div class="meta-info"><span>15 Modules</span><span>•</span><span>Code Labs</span></div>
+                    <div class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                 </div>
             </div>
-
         </div>
     </section>
 
@@ -471,29 +349,16 @@
             </div>
             <div class="footer-col">
                 <h4>Platform</h4>
-                <ul>
-                    <li><a href="#">Curriculum</a></li>
-                    <li><a href="#">Pricing</a></li>
-                    <li><a href="#">Instructors</a></li>
-                    <li><a href="#">Success Stories</a></li>
-                </ul>
+                <ul><li><a href="#">Curriculum</a></li><li><a href="#">Pricing</a></li><li><a href="#">Instructors</a></li><li><a href="#">Success Stories</a></li></ul>
             </div>
             <div class="footer-col">
                 <h4>Company</h4>
-                <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
+                <ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li><li><a href="#">Privacy Policy</a></li></ul>
             </div>
             <div class="footer-col newsletter">
                 <h4>Stay Updated</h4>
                 <p style="color: var(--text-gray); margin-bottom: 15px; font-size: 0.9rem;">Market insights delivered to your inbox weekly.</p>
-                <form>
-                    <input type="email" placeholder="Enter your email">
-                    <button type="button">Subscribe</button>
-                </form>
+                <form><input type="email" placeholder="Enter your email"><button type="button">Subscribe</button></form>
             </div>
         </div>
         <div class="footer-bottom">
@@ -508,7 +373,20 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // 1. Initialize Animations
         AOS.init({ duration: 800, once: true });
+
+        // 2. Splash Screen Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const splash = document.getElementById('splash');
+            const body = document.body;
+
+            // Wait for 2.5 seconds (loading bar duration)
+            setTimeout(() => {
+                splash.classList.add('hidden'); // Slide up
+                body.classList.add('loaded'); // Enable scroll
+            }, 2500);
+        });
     </script>
 </body>
 </html>
