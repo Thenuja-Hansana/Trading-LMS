@@ -29,164 +29,171 @@
         body {
             background-color: var(--light);
             color: var(--dark);
-            overflow-x: hidden; /* Prevent scrolling during splash */
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent; /* Remove blue tap box on mobile */
         }
 
         body.loaded {
-            overflow-x: hidden;
-            overflow-y: auto; /* Re-enable scrolling after splash */
+            overflow-y: auto;
         }
 
-        /* --- SPLASH SCREEN STYLES --- */
+        /* --- SPLASH SCREEN --- */
         .splash-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100dvh; /* Dynamic viewport height for mobile */
             background-color: var(--dark);
             z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        .splash-screen.hidden {
-            transform: translateY(-100%);
-        }
+        .splash-screen.hidden { transform: translateY(-100%); }
 
         .splash-logo {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: white;
-            letter-spacing: -1px;
-            margin-bottom: 30px;
-            opacity: 0;
-            animation: fadeIn 1s ease forwards;
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            font-size: 2rem; font-weight: 800; color: white; letter-spacing: -1px;
+            margin-bottom: 30px; opacity: 0; animation: fadeIn 1s ease forwards;
+            display: flex; align-items: center; gap: 15px;
         }
 
-        /* Loading Bar Container */
         .loading-bar-container {
-            width: 200px;
-            height: 2px;
-            background: rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
-            border-radius: 4px;
+            width: 200px; height: 2px; background: rgba(255,255,255,0.1);
+            position: relative; overflow: hidden; border-radius: 4px;
         }
 
-        /* The Moving Bar */
         .loading-bar {
-            width: 0%;
-            height: 100%;
-            background: var(--primary);
-            position: absolute;
-            top: 0;
-            left: 0;
+            width: 0%; height: 100%; background: var(--primary);
+            position: absolute; top: 0; left: 0;
             animation: loadProgress 2.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
 
         .splash-text {
-            margin-top: 15px;
-            color: var(--text-gray);
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            animation: pulse 2s infinite;
+            margin-top: 15px; color: var(--text-gray); font-size: 0.7rem;
+            letter-spacing: 2px; text-transform: uppercase; animation: pulse 2s infinite;
         }
 
-        @keyframes loadProgress {
-            0% { width: 0%; }
-            50% { width: 60%; }
-            100% { width: 100%; }
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
+        @keyframes loadProgress { 0% { width: 0%; } 50% { width: 60%; } 100% { width: 100%; } }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
 
-        /* --- MAIN SITE STYLES --- */
-
-        /* Nav */
+        /* --- NAV --- */
         nav {
-            position: absolute;
-            top: 0; left: 0; width: 100%;
-            padding: 40px 6%;
+            position: absolute; top: 0; left: 0; width: 100%;
+            padding: 30px 6%;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 1000; background: transparent;
         }
+
         .logo {
-            font-size: 1.5rem; font-weight: 800; color: white;
-            letter-spacing: -1px; display: flex; align-items: center; gap: 12px;
+            font-size: 1.4rem; font-weight: 800; color: white;
+            letter-spacing: -1px; display: flex; align-items: center; gap: 10px;
+            z-index: 1002; /* Above mobile menu */
         }
+
+        /* Desktop Nav Links */
         .nav-links { display: flex; align-items: center; gap: 3rem; }
-        .nav-links a { text-decoration: none; color: rgba(255, 255, 255, 0.8); font-weight: 500; font-size: 0.95rem; transition: 0.3s; }
+        .nav-links a { text-decoration: none; color: rgba(255, 255, 255, 0.9); font-weight: 500; font-size: 0.95rem; transition: 0.3s; }
         .nav-links a:hover { color: white; }
+
         .btn-nav-cta {
-            padding: 12px 28px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            padding: 10px 24px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2); color: white !important; border-radius: 100px;
-            transition: all 0.3s ease;
+            transition: all 0.3s ease; font-weight: 600;
         }
         .btn-nav-cta:hover { background: white; color: var(--dark) !important; }
 
-        /* Hero */
+        /* Hamburger (Hidden on Desktop) */
+        .hamburger {
+            display: none; cursor: pointer; z-index: 1002;
+            width: 30px; height: 20px; position: relative;
+        }
+        .hamburger span {
+            display: block; width: 100%; height: 2px; background-color: white;
+            position: absolute; transition: all 0.3s ease;
+        }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 9px; }
+        .hamburger span:nth-child(3) { top: 18px; }
+
+        /* Hamburger Active State */
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg); top: 9px; }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
+
+
+        /* --- HERO --- */
         .hero {
-            position: relative; height: 100vh; width: 100%;
+            position: relative; height: 100dvh; width: 100%;
             display: flex; align-items: center; justify-content: center;
             text-align: center; color: white; overflow: hidden;
+            padding: 0 20px;
         }
+
         .video-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover; z-index: -1;
         }
+
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(15,23,42,0.3) 0%, rgba(15,23,42,0.9) 100%); z-index: 0;
+            background: linear-gradient(180deg, rgba(15,23,42,0.4) 0%, rgba(15,23,42,0.95) 100%); z-index: 0;
         }
-        .hero-content { position: relative; z-index: 2; max-width: 1000px; padding: 0 20px; margin-top: 60px; }
+
+        .hero-content { position: relative; z-index: 2; max-width: 900px; margin-top: 40px; }
+
         .tagline {
-            display: inline-block; font-size: 0.9rem; font-weight: 600; letter-spacing: 3px;
-            text-transform: uppercase; color: #cbd5e1; margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 50px;
-            background: rgba(0,0,0,0.3); backdrop-filter: blur(4px);
+            display: inline-block; font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: #e2e8f0; margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 50px;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
         }
+
         .hero h1 {
-            font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -2px;
-            margin-bottom: 30px; background: linear-gradient(to bottom, #ffffff, #cbd5e1);
+            font-size: clamp(2.5rem, 8vw, 5.5rem); /* Responsive Font Sizing */
+            font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
+            margin-bottom: 25px; background: linear-gradient(to bottom, #ffffff, #94a3b8);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .hero p { font-size: 1.25rem; color: #cbd5e1; font-weight: 300; max-width: 600px; margin: 0 auto 50px; line-height: 1.6; }
+
+        .hero p {
+            font-size: clamp(1rem, 4vw, 1.25rem);
+            color: #cbd5e1; font-weight: 300; max-width: 600px;
+            margin: 0 auto 40px; line-height: 1.6;
+        }
+
+        .btn-hero {
+            background: white; color: black; padding: 16px 36px; border-radius: 100px;
+            text-decoration: none; font-weight: 700; transition: 0.3s; display: inline-block;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(255,255,255,0.2); }
+
         .scroll-indicator {
-            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2;
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 2;
             opacity: 0.7; animation: bounce 2s infinite;
         }
         @keyframes bounce { 0%, 100% {transform: translateX(-50%) translateY(0);} 50% {transform: translateX(-50%) translateY(-10px);} }
 
-        /* Bento Grid Section */
-        .disciplines-section { padding: 120px 5%; background: white; position: relative; }
-        .section-header { text-align: center; max-width: 700px; margin: 0 auto 80px; }
-        .section-header h2 { font-size: 3rem; color: var(--dark); margin-bottom: 20px; letter-spacing: -1px; }
-        .section-header p { color: var(--text-gray); font-size: 1.1rem; }
 
-        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        /* --- BENTO GRID --- */
+        .disciplines-section { padding: 100px 5%; background: white; position: relative; }
+        .section-header { text-align: center; max-width: 700px; margin: 0 auto 60px; }
+        .section-header h2 { font-size: clamp(2rem, 5vw, 3rem); color: var(--dark); margin-bottom: 15px; letter-spacing: -1px; }
+        .section-header p { color: var(--text-gray); font-size: 1.05rem; line-height: 1.5; }
+
+        .bento-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+            max-width: 1300px; margin: 0 auto;
+        }
         
         .course-card {
-            background: #fff; border: 1px solid var(--card-border); border-radius: 24px; padding: 40px;
+            background: #fff; border: 1px solid var(--card-border); border-radius: 20px; padding: 35px;
             position: relative; transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-            display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; height: 400px; cursor: pointer;
+            display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
+            height: 380px; cursor: pointer;
         }
-        .course-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); border-color: var(--primary); }
+
+        .course-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1); border-color: var(--primary); }
         .course-card::before {
             content: ''; position: absolute; top: 0; right: 0; width: 150px; height: 150px;
             background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, rgba(255,255,255,0) 70%);
@@ -194,46 +201,91 @@
         }
         .course-card:hover::before { opacity: 1; }
 
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-        .tag { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 6px 12px; border-radius: 50px; background: #f1f5f9; color: var(--text-gray); transition: 0.3s; }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding: 5px 10px; border-radius: 50px; background: #f1f5f9; color: var(--text-gray); transition: 0.3s; }
         .course-card:hover .tag { background: var(--primary); color: white; }
-        .icon-box { width: 50px; height: 50px; background: #f8fafc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 1.2rem; transition: 0.4s ease; }
+        
+        .icon-box { width: 45px; height: 45px; background: #f8fafc; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--dark); transition: 0.4s ease; }
         .course-card:hover .icon-box { background: var(--primary); color: white; transform: scale(1.1) rotate(-5deg); }
-        .course-card h3 { font-size: 1.8rem; margin-bottom: 15px; color: var(--dark); font-weight: 700; }
-        .course-card p { font-size: 1rem; color: var(--text-gray); line-height: 1.6; }
-        .card-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 25px; }
-        .meta-info { font-size: 0.85rem; color: var(--text-gray); display: flex; gap: 15px; }
-        .arrow-btn { width: 40px; height: 40px; border-radius: 50%; background: white; border: 1px solid var(--card-border); display: flex; align-items: center; justify-content: center; color: var(--dark); transition: all 0.3s ease; }
+
+        .course-card h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--dark); font-weight: 700; }
+        .course-card p { font-size: 0.95rem; color: var(--text-gray); line-height: 1.6; }
+
+        .card-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 20px; }
+        .meta-info { font-size: 0.8rem; color: var(--text-gray); display: flex; gap: 10px; }
+        .arrow-btn { width: 36px; height: 36px; border-radius: 50%; background: white; border: 1px solid var(--card-border); display: flex; align-items: center; justify-content: center; color: var(--dark); transition: all 0.3s ease; }
         .course-card:hover .arrow-btn { background: var(--dark); color: white; border-color: var(--dark); transform: translateX(5px); }
 
+        /* Specific Desktop Layout logic */
         .bento-grid .course-card:nth-child(4) { grid-column: span 1; margin-left: auto; }
         .bento-grid .course-card:nth-child(5) { grid-column: span 1; margin-right: auto; }
-        
-        .bottom-row-wrapper { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 900px; margin: 30px auto 0; }
+        .bottom-row-wrapper { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 860px; margin: 24px auto 0; }
 
-        /* Footer */
-        footer { background-color: var(--dark); color: white; padding: 100px 8% 40px; }
-        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 60px; margin-bottom: 80px; }
-        .footer-col h4 { font-size: 1.1rem; margin-bottom: 25px; color: white; }
+
+        /* --- FOOTER --- */
+        footer { background-color: var(--dark); color: white; padding: 80px 5% 40px; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 60px; }
+        .footer-col h4 { font-size: 1rem; margin-bottom: 20px; color: white; text-transform: uppercase; letter-spacing: 1px; }
         .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 15px; }
-        .footer-col ul li a { color: var(--text-gray); text-decoration: none; transition: 0.2s; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { color: var(--text-gray); text-decoration: none; transition: 0.2s; font-size: 0.9rem; }
         .footer-col ul li a:hover { color: white; }
-        .footer-logo { font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; display: block; }
-        .newsletter input { width: 100%; padding: 15px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; margin-bottom: 10px; }
-        .newsletter button { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .footer-logo { font-size: 1.4rem; font-weight: 800; margin-bottom: 15px; display: block; }
+        
+        .newsletter input { width: 100%; padding: 14px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; margin-bottom: 10px; font-size: 0.9rem; }
+        .newsletter button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
         .newsletter button:hover { background: #1d4ed8; }
-        .footer-bottom { border-top: 1px solid #334155; padding-top: 40px; display: flex; justify-content: space-between; color: var(--text-gray); font-size: 0.9rem; }
+        
+        .footer-bottom { border-top: 1px solid #334155; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: var(--text-gray); font-size: 0.85rem; flex-wrap: wrap; gap: 20px; }
 
-        @media (max-width: 1024px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } .bottom-row-wrapper { grid-template-columns: 1fr; } }
-        @media (max-width: 768px) { .nav-links { display: none; } .bento-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 3rem; } .footer-grid { grid-template-columns: 1fr; } }
+        /* === MOBILE RESPONSIVENESS === */
+        @media (max-width: 1024px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .bottom-row-wrapper { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            /* Mobile Nav */
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0; right: 0;
+                height: 100vh; width: 100%;
+                background: var(--dark);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transform: translateX(100%); /* Hidden */
+                transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+                z-index: 1001;
+            }
+            .nav-links.active { transform: translateX(0); }
+            .nav-links a { font-size: 1.5rem; color: white; }
+
+            /* Mobile Grid */
+            .bento-grid { grid-template-columns: 1fr; }
+            .bottom-row-wrapper { grid-template-columns: 1fr; width: 100%; }
+            
+            /* Resetting the centering logic for mobile */
+            .bento-grid .course-card:nth-child(4),
+            .bento-grid .course-card:nth-child(5) { margin: 0; }
+
+            /* Mobile Footer */
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            
+            /* Text Sizing */
+            .hero-content { margin-top: 0; }
+            .course-card { height: auto; min-height: 320px; padding: 25px; }
+        }
     </style>
 </head>
 <body>
 
     <div class="splash-screen" id="splash">
         <div class="splash-logo">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+            <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
             TRADE ACADEMY
         </div>
         <div class="loading-bar-container">
@@ -247,11 +299,18 @@
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
             TRADE ACADEMY
         </div>
-        <div class="nav-links">
-            <a href="#">Curriculum</a>
-            <a href="#">Mentorship</a>
-            <a href="#">Resources</a>
-            <a href="#" class="btn-nav-cta">Student Portal</a>
+        
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="nav-links" id="nav-links">
+            <a href="#" onclick="closeMenu()">Curriculum</a>
+            <a href="#" onclick="closeMenu()">Mentorship</a>
+            <a href="#" onclick="closeMenu()">Resources</a>
+            <a href="#" class="btn-nav-cta" onclick="closeMenu()">Student Portal</a>
         </div>
     </nav>
 
@@ -264,8 +323,8 @@
             <span class="tagline" data-aos="fade-down" data-aos-delay="2800">The Future of Financial Literacy</span>
             <h1 data-aos="fade-up" data-aos-delay="2900">Trade with Intelligence.<br>Learn with Clarity.</h1>
             <p data-aos="fade-up" data-aos-delay="3000">A world-class curriculum designed for high-performance individuals looking to master the art and science of the financial markets.</p>
-            <div data-aos="fade-up" data-aos-delay="3100" style="margin-top: 40px;">
-                <a href="#curriculum" style="background: white; color: black; padding: 18px 40px; border-radius: 100px; text-decoration: none; font-weight: 700; transition: 0.3s; display: inline-block;">Explore Learning Paths</a>
+            <div data-aos="fade-up" data-aos-delay="3100" style="margin-top: 30px;">
+                <a href="#curriculum" class="btn-hero">Explore Learning Paths</a>
             </div>
         </div>
         <div class="scroll-indicator">
@@ -287,7 +346,7 @@
                 </div>
                 <div><h3>Basic Foundations</h3><p>Market terminology, exchange mechanics, and platform setup. The essential groundwork for all future learning.</p></div>
                 <div class="card-footer">
-                    <div class="meta-info"><span>12 Modules</span><span>•</span><span>4h Video</span></div>
+                    <div class="meta-info"><span>12 Modules</span></div>
                     <div class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                 </div>
             </div>
@@ -298,7 +357,7 @@
                 </div>
                 <div><h3>Market Analysis</h3><p>Technical patterns and fundamental indicators. Learn to read the charts like a language.</p></div>
                 <div class="card-footer">
-                    <div class="meta-info"><span>24 Modules</span><span>•</span><span>8h Video</span></div>
+                    <div class="meta-info"><span>24 Modules</span></div>
                     <div class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                 </div>
             </div>
@@ -309,7 +368,7 @@
                 </div>
                 <div><h3>Trading Psychology</h3><p>Emotional regulation and cognitive bias control. Master the most important asset: your mind.</p></div>
                 <div class="card-footer">
-                    <div class="meta-info"><span>10 Modules</span><span>•</span><span>Live Workshops</span></div>
+                    <div class="meta-info"><span>10 Modules</span></div>
                     <div class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                 </div>
             </div>
@@ -323,7 +382,7 @@
                 </div>
                 <div><h3>Risk Management</h3><p>Position sizing and capital preservation. The mathematical formula for longevity in the markets.</p></div>
                 <div class="card-footer">
-                    <div class="meta-info"><span>8 Modules</span><span>•</span><span>Tools included</span></div>
+                    <div class="meta-info"><span>8 Modules</span></div>
                     <div class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                 </div>
             </div>
@@ -334,7 +393,7 @@
                 </div>
                 <div><h3>Niche & Algo Strategies</h3><p>Algorithmic trading, Crypto-assets, and Macro-economic strategy for the modern era.</p></div>
                 <div class="card-footer">
-                    <div class="meta-info"><span>15 Modules</span><span>•</span><span>Code Labs</span></div>
+                    <div class="meta-info"><span>15 Modules</span></div>
                     <div class="arrow-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></div>
                 </div>
             </div>
@@ -349,11 +408,11 @@
             </div>
             <div class="footer-col">
                 <h4>Platform</h4>
-                <ul><li><a href="#">Curriculum</a></li><li><a href="#">Pricing</a></li><li><a href="#">Instructors</a></li><li><a href="#">Success Stories</a></li></ul>
+                <ul><li><a href="#">Curriculum</a></li><li><a href="#">Pricing</a></li><li><a href="#">Instructors</a></li></ul>
             </div>
             <div class="footer-col">
                 <h4>Company</h4>
-                <ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li><li><a href="#">Privacy Policy</a></li></ul>
+                <ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact</a></li></ul>
             </div>
             <div class="footer-col newsletter">
                 <h4>Stay Updated</h4>
@@ -362,11 +421,9 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 TradeAcademy Global. All rights reserved.</p>
+            <p>&copy; 2024 TradeAcademy Global.</p>
             <div style="display: flex; gap: 20px;">
-                <a href="#" style="color: var(--text-gray); text-decoration: none;">Twitter</a>
-                <a href="#" style="color: var(--text-gray); text-decoration: none;">LinkedIn</a>
-                <a href="#" style="color: var(--text-gray); text-decoration: none;">Instagram</a>
+                <a href="#">Twitter</a><a href="#">LinkedIn</a><a href="#">Instagram</a>
             </div>
         </div>
     </footer>
@@ -380,13 +437,26 @@
         document.addEventListener('DOMContentLoaded', () => {
             const splash = document.getElementById('splash');
             const body = document.body;
-
-            // Wait for 2.5 seconds (loading bar duration)
             setTimeout(() => {
-                splash.classList.add('hidden'); // Slide up
-                body.classList.add('loaded'); // Enable scroll
+                splash.classList.add('hidden');
+                body.classList.add('loaded');
             }, 2500);
         });
+
+        // 3. Mobile Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        function closeMenu() {
+            navLinks.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
     </script>
 </body>
 </html>
