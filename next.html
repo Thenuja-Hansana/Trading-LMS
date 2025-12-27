@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Trader Academy | Excellence in Education</title>
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-light: #f8fafc;
+            --primary-blue: #2563eb;
+            --accent-soft: #e0e7ff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Elements */
+        .bg-blob {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: -1;
+            filter: blur(50px);
+            animation: move 20s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(20%, 20%); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary-blue);
+            letter-spacing: -1px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-left: 2.5rem;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--primary-blue); }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 10%;
+        }
+
+        .hero span {
+            display: inline-block;
+            background: var(--accent-soft);
+            color: var(--primary-blue);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            background: linear-gradient(to bottom right, #0f172a, #334155);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Enrollment Cards Section */
+        .courses {
+            padding: 100px 8%;
+            background: white;
+            border-radius: 60px 60px 0 0;
+            box-shadow: 0 -20px 40px rgba(0,0,0,0.02);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .course-card {
+            background: #fff;
+            padding: 50px 40px;
+            border-radius: 24px;
+            border: 1px solid #f1f5f9;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        /* Advanced Hover Effect */
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 0%;
+            background: var(--primary-blue);
+            transition: all 0.4s ease;
+            z-index: 0;
+            opacity: 0.05;
+        }
+
+        .course-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+            border-color: var(--primary-blue);
+        }
+
+        .course-card:hover::before { height: 100%; }
+
+        .course-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .course-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .course-card .icon-box {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-soft);
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-weight: 800;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-light); }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        .btn {
+            background: var(--text-dark);
+            color: white;
+            padding: 18px 35px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: var(--primary-blue);
+            transform: scale(1.05);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-blob"></div>
+
+    <nav>
+        <div class="logo">ELITE TRADER.</div>
+        <div class="nav-links">
+            <a href="#">Curriculum</a>
+            <a href="#">Success Stories</a>
+            <a href="#" class="btn" style="padding: 10px 25px; font-size: 0.8rem;">Enrol Now</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <span data-aos="fade-down">The Future of Financial Literacy</span>
+        <h1 data-aos="fade-up" data-aos-delay="100">Trade with Intelligence.<br>Learn with Clarity.</h1>
+        <p data-aos="fade-up" data-aos-delay="200" style="max-width: 700px; color: var(--text-muted); font-size: 1.2rem; margin-bottom: 30px;">
+            A world-class curriculum designed for high-performance individuals looking to master the art and science of the financial markets.
+        </p>
+        <div data-aos="zoom-in" data-aos-delay="300">
+            <a href="#explore" class="btn">Explore Learning Paths</a>
+        </div>
+    </header>
+
+    <section id="explore" class="courses">
+        <div style="text-align: center;" data-aos="fade-up">
+            <h2 style="font-size: 2.5rem; margin-bottom: 15px;">Enrollment Fields</h2>
+            <p style="color: var(--text-muted);">Choose your discipline and start your professional journey</p>
+        </div>
+
+        <div class="grid">
+            <div class="course-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="icon-box">01</div>
+                <h3>Market Basics</h3>
+                <p>The core infrastructure of global finance. Understand the 'how' and 'why' before you risk a single cent.</p>
+            </div>
+
+            <div class="course-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon-box">02</div>
+                <h3>Advanced Analysis</h3>
+                <p>Decoding market movements through technical precision and fundamental logic.</p>
+            </div>
+
+            <div class="course-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon-box">03</div>
+                <h3>Psychology</h3>
+                <p>Master the most volatile instrument in trading: your own mind. Emotional intelligence for the tape.</p>
+            </div>
+
+            <div class="course-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="icon-box">04</div>
+                <h3>Risk Management</h3>
+                <p>Survival is the ultimate strategy. Learn institutional-grade capital protection.</p>
+            </div>
+
+            <div class="course-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="icon-box">05</div>
+                <h3>Specialized Fields</h3>
+                <p>Exploring macroeconomics, algorithmic concepts, and emerging asset classes.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer style="padding: 100px 8%; background: white; text-align: center; border-top: 1px solid #f1f5f9;">
+        <h2 style="margin-bottom: 20px;">Ready to elevate your game?</h2>
+        <a href="#" class="btn">Apply to Join</a>
+        <p style="margin-top: 50px; color: var(--text-muted); font-size: 0.8rem;">&copy; 2024 Elite Trader Academy. All rights reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize Scroll Animations
+        AOS.init({
+            duration: 1000,
+            once: false,
+            mirror: true
+        });
+    </script>
+</body>
+</html>
